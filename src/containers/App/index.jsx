@@ -5,7 +5,7 @@ import HelloMessage from 'components/HelloMessage'
 const App = () => {
   return (
     <div>
-      <p>hello message before info xxx</p>
+      <p>hello message before info</p>
 
       <HelloMessage />
 
