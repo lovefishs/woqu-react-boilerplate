@@ -262,7 +262,7 @@ const getConfig = (conf) => {
           { from: resolve(__dirname, conf.path_source, 'libs'), to: 'libs' },
           { from: resolve(__dirname, conf.path_source, 'assets'), to: 'assets' },
         ], {
-          ignore: [ '.gitkeep' ], // 忽略文件
+          ignore: [ '.DS_Store', 'Thumbs.db', '.gitkeep' ], // 忽略文件
           copyUnmodified: false, // hot-dev 时只复制有修改的文件
         }),
         new DefinePlugin(conf.globals),
