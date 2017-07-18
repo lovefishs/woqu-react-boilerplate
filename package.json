@@ -6,6 +6,7 @@
     "dev": "NODE_ENV=development webpack-dev-server",
     "dev:hmr": "NODE_ENV=development HMR_ENV=true webpack-dev-server",
     "build": "NODE_ENV=production webpack",
+    "lint-js": "q-lint-js src/**/*.js src/**/*.jsx; exit 0",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -46,6 +47,7 @@
     "postcss-cssnext": "3.0.2",
     "postcss-import": "10.0.0",
     "postcss-loader": "2.0.6",
+    "q-lint-js": "2.1.0",
     "style-loader": "0.18.2",
     "url-loader": "0.5.9",
     "webpack": "3.3.0",

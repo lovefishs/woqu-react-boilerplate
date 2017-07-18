@@ -12,6 +12,8 @@ class HelloMessage extends Component {
   }
   constructor (props) {
     super(props)
+
+    console.log('HelloMessage constructor')
   }
 
   render () {

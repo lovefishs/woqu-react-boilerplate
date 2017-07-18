@@ -23,5 +23,7 @@ console.log('__DEV__', typeof __DEV__, __DEV__)
 console.log('__PROD__', typeof __PROD__, __PROD__)
 
 if (__DEV__ && __HMR__ && module.hot) {
-  module.hot.accept('containers/App', () => { render(App) })
+  module.hot.accept('containers/App', () => {
+    render(App)
+  })
 }
