@@ -1,5 +1,5 @@
 const { resolve } = require('path')
-const { NODE_ENV, HMR_ENV, PORT } = process.env
+const { NODE_ENV, PORT, HMR, MINI } = process.env
 
 const ENV_PRODUCTION = 'production'
 const ENV_DEVELOPMENT = 'development'
@@ -20,7 +20,8 @@ const conf = {
   // ENV
   env: ENV,
   env_dev: ENV === ENV_DEVELOPMENT,
-  hmr: HMR_ENV ? true : false,
+  hmr: HMR ? true : false,
+  minimize: MINI ? true : false,
 
   // Server Configuration
   server_dev_host: SERVER_DEV_HOST,

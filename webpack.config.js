@@ -24,7 +24,7 @@ const extractModuleCSS = new ExtractTextPlugin('styles.module.[chunkhash].css')
  * @param  {String} path   源码目录绝对路径
  * @return {Object} result entry 对象与 html plugins 数组
  */
-const getEntryAndPlugins = (path, isDEV, isHMR) => {
+const getEntryAndPlugins = (path, isDEV, isHMR, isMini) => {
   const result = {
     entry: {},
     plugins: [],
@@ -72,8 +72,8 @@ const getEntryAndPlugins = (path, isDEV, isHMR) => {
         })
       }
 
-      if (!isDEV) {
-        // 非 dev 模式启用压缩
+      if (!isDEV && isMini) {
+        // 非 dev 模式且启用压缩
         Object.assign(options, {
           minify: {
             collapseWhitespace: true,
@@ -117,7 +117,7 @@ const getEntryAndPlugins = (path, isDEV, isHMR) => {
 
   if (isDEV && isHMR) {
     result.plugins.unshift(new HotModuleReplacementPlugin())
-  } else if (!isDEV) {
+  } else if (!isDEV && isMini) {
     // --optimize-minimize 选项会开启 UglifyJsPlugin，但默认的 UglifyJsPlugin 配置并没有把代码压缩到最小输出，还是有注释和空格，需要覆盖默认的配置
     result.plugins.push(new UglifyJsPlugin({
       beautify: false, // 最紧凑的输出
@@ -137,7 +137,7 @@ const getConfig = (conf) => {
   const output = conf.env_dev ? conf.path_dev : conf.path_dist
   const outputPath = resolve(__dirname, output)
   const postcssConfigPath = resolve(__dirname, 'postcss.config.js')
-  const entryAndPlugins = getEntryAndPlugins(resolve(__dirname, conf.path_source), conf.env_dev, conf.hmr)
+  const entryAndPlugins = getEntryAndPlugins(resolve(__dirname, conf.path_source), conf.env_dev, conf.hmr, conf.minimize)
 
   const config = {
     target: 'web',
@@ -198,7 +198,10 @@ const getConfig = (conf) => {
               return baseUse
             } else {
               baseUse.shift() // remove style-loader
-              Object.assign(baseUse[0].options, { minimize: true }) // enable minification
+
+              if (conf.minimize) {
+                Object.assign(baseUse[0].options, { minimize: true })
+              }
 
               return extractCSS.extract({
                 fallback: 'style-loader',
@@ -238,7 +241,10 @@ const getConfig = (conf) => {
               return baseUse
             } else {
               baseUse.shift() // remove style-loader
-              Object.assign(baseUse[0].options, { minimize: true }) // enable minification
+
+              if (conf.minimize) {
+                Object.assign(baseUse[0].options, { minimize: true })
+              }
 
               return extractModuleCSS.extract({
                 fallback: 'style-loader',

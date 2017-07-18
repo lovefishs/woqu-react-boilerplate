@@ -5,7 +5,8 @@
   "scripts": {
     "dev": "NODE_ENV=development webpack-dev-server",
     "dev:hmr": "NODE_ENV=development HMR_ENV=true webpack-dev-server",
-    "build": "NODE_ENV=production webpack",
+    "build": "NODE_ENV=production MINI=true webpack",
+    "build:source": "NODE_ENV=production webpack",
     "lint-js": "q-lint-js src/**/*.js src/**/*.jsx; exit 0",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
