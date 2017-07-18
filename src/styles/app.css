@@ -1,0 +1,28 @@
+* {
+  &,
+  &::before,
+  &::after {
+    margin: 0;
+    padding: 0;
+    box-sizing: inherit;
+  }
+}
+
+html {
+  font-size: 16px;
+  box-sizing: border-box;
+}
+
+html, body {
+  height: 100%;
+}
+
+body {
+  font-size: .875rem;
+  color: #333;
+}
+
+#root {
+  padding: 20px;
+  height: 100%;
+}
