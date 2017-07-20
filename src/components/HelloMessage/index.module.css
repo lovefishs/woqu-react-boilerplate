@@ -1,3 +1,5 @@
+@import 'styles/common/var.css';
+
 .message {
-  font-size: 2rem;
+  font-size: calc(var(--fontSize) * 2);
 }
