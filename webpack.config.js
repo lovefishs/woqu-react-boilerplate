@@ -1,10 +1,14 @@
 const fs = require('fs')
 const { resolve } = require('path')
+
 const webpack = require('webpack')
+const atImport = require('postcss-import')
+const cssnext = require('postcss-cssnext')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const ExtractTextPlugin = require('extract-text-webpack-plugin')
 const CleanWebpackPlugin = require('clean-webpack-plugin')
 const CopyWebpackPlugin  = require('copy-webpack-plugin')
+
 const { HotModuleReplacementPlugin, DefinePlugin } = webpack
 const { CommonsChunkPlugin, ModuleConcatenationPlugin, UglifyJsPlugin } = webpack.optimize
 
@@ -136,8 +140,19 @@ const getEntryAndPlugins = (path, isDEV, isHMR, isMini) => {
 const getConfig = (conf) => {
   const output = conf.env_dev ? conf.path_dev : conf.path_dist
   const outputPath = resolve(__dirname, output)
-  const postcssConfigPath = resolve(__dirname, 'postcss.config.js')
-  const entryAndPlugins = getEntryAndPlugins(resolve(__dirname, conf.path_source), conf.env_dev, conf.hmr, conf.minimize)
+  const sourcePath = resolve(__dirname, conf.path_source)
+  const nodeModulesPath = resolve(__dirname, 'node_modules')
+  const copyPluginPaths = [
+    { from: resolve(sourcePath, 'libs'), to: 'libs' },
+    { from: resolve(sourcePath, 'assets'), to: 'assets' },
+  ]
+  const postCssPlugins = [
+    atImport({
+      path: [sourcePath, nodeModulesPath],
+    }),
+    cssnext(),
+  ]
+  const entryAndPlugins = getEntryAndPlugins(sourcePath, conf.env_dev, conf.hmr, conf.minimize)
 
   const config = {
     target: 'web',
@@ -150,7 +165,7 @@ const getConfig = (conf) => {
       publicPath: conf.compiler_public_path,
     },
     resolve: {
-      modules: [resolve(__dirname, conf.path_source), resolve(__dirname, 'node_modules')],
+      modules: [sourcePath, nodeModulesPath],
       mainFields: ['browser', 'jsnext:main', 'module', 'main'], // why 'browser': https://github.com/webpack/webpack-dev-server/issues/727
       extensions: ['.js', '.jsx', '.json'],
     },
@@ -158,7 +173,7 @@ const getConfig = (conf) => {
       rules: [
         {
           test: /\.(js|jsx)$/,
-          include: resolve(__dirname, conf.path_source),
+          include: sourcePath,
           use: [
             {
               loader: 'babel-loader',
@@ -187,9 +202,7 @@ const getConfig = (conf) => {
               {
                 loader: 'postcss-loader',
                 options: {
-                  config: {
-                    path: postcssConfigPath,
-                  },
+                  plugins: postCssPlugins,
                 },
               },
             ]
@@ -214,7 +227,7 @@ const getConfig = (conf) => {
         },
         {
           test: /\.module\.css$/,
-          include: resolve(__dirname, conf.path_source),
+          include: sourcePath,
           use: (function () {
             const baseUse = [
               { loader: 'style-loader' },
@@ -223,16 +236,14 @@ const getConfig = (conf) => {
                 options: {
                   modules: true,
                   camelCase: true,
-                  localIdentName: '[local]__[hash:base64]', // [path][name]__[local]--[hash:base64:5]
+                  localIdentName: '[local]__[hash:base64:8]', // [path][name]__[local]--[hash:base64:8]
                   importLoaders: 1,
                 },
               },
               {
                 loader: 'postcss-loader',
                 options: {
-                  config: {
-                    path: postcssConfigPath,
-                  },
+                  plugins: postCssPlugins,
                 },
               },
             ]
@@ -255,6 +266,30 @@ const getConfig = (conf) => {
             return []
           })(),
         },
+        {
+          test: /\.(jpe?g|png|gif|bmp)$/i,
+          use: [
+            {
+              loader: 'url-loader',
+              options: {
+                limit: 1024,
+                name: `assets/imgs/[name]${conf.env_dev ? '' : '.[hash:base64:8]'}.[ext]`,
+              },
+            },
+          ],
+        },
+        {
+          test: /\.(woff2?|eot|ttf|otf|svg)$/i,
+          use: [
+            {
+              loader: 'url-loader',
+              options: {
+                limit: 10 * 1024,
+                name: `assets/fonts/[name]${conf.env_dev ? '' : '.[hash:base64:8]'}.[ext]`,
+              },
+            },
+          ],
+        },
       ],
     },
     plugins: (function () {
@@ -264,10 +299,7 @@ const getConfig = (conf) => {
           verbose: true, // 输出 log 到 console
           dry: false, // true 时会不删除任何东西(测试用)
         }),
-        new CopyWebpackPlugin([
-          { from: resolve(__dirname, conf.path_source, 'libs'), to: 'libs' },
-          { from: resolve(__dirname, conf.path_source, 'assets'), to: 'assets' },
-        ], {
+        new CopyWebpackPlugin(copyPluginPaths, {
           ignore: [ '.DS_Store', 'Thumbs.db', '.gitkeep' ], // 忽略文件
           copyUnmodified: false, // hot-dev 时只复制有修改的文件
         }),
@@ -291,7 +323,7 @@ const getConfig = (conf) => {
       clientLogLevel: 'none',
       stats: 'minimal',
       headers: {},
-      proxy: proxy(conf),
+      proxy: proxy(conf.server_mock_host, conf.server_mock_port),
     },
   }
 
