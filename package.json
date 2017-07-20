@@ -5,8 +5,8 @@
   "scripts": {
     "dev": "NODE_ENV=development webpack-dev-server",
     "dev:hmr": "NODE_ENV=development HMR=true webpack-dev-server",
-    "build": "NODE_ENV=production MINI=true webpack",
-    "build:source": "NODE_ENV=production webpack",
+    "build": "NODE_ENV=production MINI=true webpack --hide-modules",
+    "build:source": "NODE_ENV=production webpack --hide-modules",
     "lint-js": "q-lint-js src/**/*.js src/**/*.jsx; exit 0",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -44,6 +44,7 @@
     "babel-preset-env": "1.6.0",
     "babel-preset-react": "6.24.1",
     "clean-webpack-plugin": "0.1.16",
+    "compression-webpack-plugin": "1.0.0",
     "copy-webpack-plugin": "4.0.1",
     "css-loader": "0.28.4",
     "extract-text-webpack-plugin": "3.0.0",
