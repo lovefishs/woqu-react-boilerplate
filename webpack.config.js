@@ -9,7 +9,7 @@ const ExtractTextPlugin = require('extract-text-webpack-plugin')
 const CleanWebpackPlugin = require('clean-webpack-plugin')
 const CopyWebpackPlugin  = require('copy-webpack-plugin')
 
-const { HotModuleReplacementPlugin, DefinePlugin } = webpack
+const { HotModuleReplacementPlugin, DefinePlugin, NamedModulesPlugin, HashedModuleIdsPlugin } = webpack
 const { CommonsChunkPlugin, ModuleConcatenationPlugin, UglifyJsPlugin } = webpack.optimize
 
 const conf = require('./conf')
@@ -121,17 +121,29 @@ const getEntryAndPlugins = (path, isDEV, isHMR, isMini) => {
 
   if (isDEV && isHMR) {
     result.plugins.unshift(new HotModuleReplacementPlugin())
+
+    result.plugins.push(new NamedModulesPlugin()) // HMR 时直接返回模块名而不是模块 id
   } else if (!isDEV && isMini) {
     // --optimize-minimize 选项会开启 UglifyJsPlugin，但默认的 UglifyJsPlugin 配置并没有把代码压缩到最小输出，还是有注释和空格，需要覆盖默认的配置
+    // http://lisperator.net/uglifyjs/compress
     result.plugins.push(new UglifyJsPlugin({
       beautify: false, // 最紧凑的输出
       comments: false, // 删除所有的注释
       compress: {
         warnings: false,
-        unused: true,
+        conditionals: true, // 优化 if-s 与条件表达式
+        unused: true, // 丢弃未使用的变量与函数
+        comparisons: true,
+        sequences: true,
         dead_code: true,
+        evaluate: true,
+        if_return: true,
+        join_vars: true,
       },
     }))
+
+    // https://webpack.js.org/plugins/hashed-module-ids-plugin/
+    result.plugins.push(new HashedModuleIdsPlugin())
   }
 
   return result
