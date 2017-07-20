@@ -272,7 +272,7 @@ const getConfig = (conf) => {
             {
               loader: 'url-loader',
               options: {
-                limit: 1024,
+                limit: 1024, // 1k
                 name: `assets/imgs/[name]${conf.env_dev ? '' : '.[hash:base64:8]'}.[ext]`,
               },
             },
@@ -284,7 +284,7 @@ const getConfig = (conf) => {
             {
               loader: 'url-loader',
               options: {
-                limit: 10 * 1024,
+                limit: 10 * 1024, // 10k
                 name: `assets/fonts/[name]${conf.env_dev ? '' : '.[hash:base64:8]'}.[ext]`,
               },
             },
