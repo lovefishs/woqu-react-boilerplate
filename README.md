@@ -18,6 +18,7 @@ WoQu's React App Boilerplate
 * HTML 模板编译支持
 * 文件 MD5 戳支持
 * 可以使用 [q-lint-js](https://github.com/lovefishs/q-lint-js) 进行代码规则校验
+* 图片、字体资源管理
 
 ## Instanll
 
@@ -55,7 +56,6 @@ npm run lint-js
 
 ## TODO
 
-* [ ] 图片、字体资源管理
 * [ ] 页面路由
 * [ ] 模块懒加载策略
 * [ ] 应用状态管理
