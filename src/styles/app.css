@@ -38,10 +38,6 @@ body {
   font-style: normal;
 }
 
-.danger-theme {
-  @apply --danger-theme;
-}
-
 #root {
   padding: 20px;
   height: 100%;

@@ -10,9 +10,4 @@
   /* Base */
   --fontSize: 1rem;
   --mainColor: #333;
-
-  --danger-theme: {
-    color: white;
-    background-color: red;
-  };
 }
