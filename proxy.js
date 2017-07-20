@@ -1,6 +1,6 @@
-const proxy = (conf) => {
+const proxy = (server = '0.0.0.0', port = '') => {
   // see: https://doc.webpack-china.org/configuration/dev-server/#devserver-proxy
-  const mockServer = `http://${conf.server_mock_host}:${conf.server_mock_port}`
+  const mockServer = `http://${server}${port === '' ? '' : (':' + port)}`
 
   return {
     '/api': {
