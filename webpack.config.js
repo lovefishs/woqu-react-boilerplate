@@ -124,36 +124,42 @@ const getEntryAndPlugins = (path, isDEV, isHMR, isMini) => {
     result.plugins.unshift(new HotModuleReplacementPlugin())
 
     result.plugins.push(new NamedModulesPlugin()) // HMR 时直接返回模块名而不是模块 id
-  } else if (!isDEV && isMini) {
-    // --optimize-minimize 选项会开启 UglifyJsPlugin，但默认的 UglifyJsPlugin 配置并没有把代码压缩到最小输出，还是有注释和空格，需要覆盖默认的配置
-    // http://lisperator.net/uglifyjs/compress
-    result.plugins.push(new UglifyJsPlugin({
-      beautify: false, // 最紧凑的输出
-      comments: false, // 删除所有的注释
-      compress: {
-        warnings: false,
-        conditionals: true, // 优化 if-s 与条件表达式
-        unused: true, // 丢弃未使用的变量与函数
-        comparisons: true,
-        sequences: true,
-        dead_code: true,
-        evaluate: true,
-        if_return: true,
-        join_vars: true,
-      },
-    }))
+  } else if (!isDEV) {
+    // 启用 Scope Hoisting(作用域提升，会与 HMR 冲突，所以放在 build 阶段用以优化代码)
+    // https://zhuanlan.zhihu.com/p/27980441
+    result.plugins.push(new ModuleConcatenationPlugin())
 
-    // https://webpack.js.org/plugins/hashed-module-ids-plugin/
-    result.plugins.push(new HashedModuleIdsPlugin())
+    if (isMini) {
+      // --optimize-minimize 选项会开启 UglifyJsPlugin，但默认的 UglifyJsPlugin 配置并没有把代码压缩到最小输出，还是有注释和空格，需要覆盖默认的配置
+      // http://lisperator.net/uglifyjs/compress
+      result.plugins.push(new UglifyJsPlugin({
+        beautify: false, // 最紧凑的输出
+        comments: false, // 删除所有的注释
+        compress: {
+          warnings: false,
+          conditionals: true, // 优化 if-s 与条件表达式
+          unused: true, // 丢弃未使用的变量与函数
+          comparisons: true,
+          sequences: true,
+          dead_code: true,
+          evaluate: true,
+          if_return: true,
+          join_vars: true,
+        },
+      }))
 
-    // 启用 gzip 压缩(需要服务端配合配置): https://doc.webpack-china.org/plugins/compression-webpack-plugin/
-    new CompressionPlugin({
-      asset: '[path].gz[query]',
-      algorithm: 'gzip',
-      test: /\.(js|css|html)$/,
-      threshold: 10 * 1024,
-      minRatio: 0.8,
-    })
+      // https://webpack.js.org/plugins/hashed-module-ids-plugin/
+      result.plugins.push(new HashedModuleIdsPlugin())
+
+      // 启用 gzip 压缩(需要服务端配合配置): https://doc.webpack-china.org/plugins/compression-webpack-plugin/
+      new CompressionPlugin({
+        asset: '[path].gz[query]',
+        algorithm: 'gzip',
+        test: /\.(js|css|html)$/,
+        threshold: 10 * 1024,
+        minRatio: 0.8,
+      })
+    }
   }
 
   return result
@@ -316,21 +322,23 @@ const getConfig = (conf) => {
     },
     plugins: (function () {
       const commonPlugins = [
-        new CleanWebpackPlugin([output], {
-          root: resolve(__dirname), // webpack.config.js 文件的根路径
-          verbose: true, // 输出 log 到 console
-          dry: false, // true 时会不删除任何东西(测试用)
-        }),
         new CopyWebpackPlugin(copyPluginPaths, {
           ignore: [ '.DS_Store', 'Thumbs.db', '.gitkeep' ], // 忽略文件
           copyUnmodified: false, // hot-dev 时只复制有修改的文件
         }),
         new DefinePlugin(conf.globals),
-        new ModuleConcatenationPlugin(),
       ]
-      const plugins = conf.env_dev ? [...commonPlugins, ...entryAndPlugins.plugins] : [...commonPlugins, extractCSS, extractModuleCSS, ...entryAndPlugins.plugins]
 
-      return plugins
+      if (!conf.env_dev) {
+        // build 阶段清除 output 目录
+        commonPlugins.unshift(new CleanWebpackPlugin([output], {
+          root: resolve(__dirname), // webpack.config.js 文件的根路径
+          verbose: true, // 输出 log 到 console
+          dry: false, // true 时会不删除任何东西(测试用)
+        }))
+      }
+
+      return conf.env_dev ? [...commonPlugins, ...entryAndPlugins.plugins] : [...commonPlugins, extractCSS, extractModuleCSS, ...entryAndPlugins.plugins]
     })(),
     devServer: {
       host: conf.server_dev_host,
