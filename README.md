@@ -19,6 +19,7 @@ WoQu's React App Boilerplate
 * 文件 MD5 戳支持
 * 可以使用 [q-lint-js](https://github.com/lovefishs/q-lint-js) 进行代码规则校验
 * 图片、字体资源管理
+* gzip([compression-webpack-plugin](https://github.com/webpack-contrib/compression-webpack-plugin))
 
 ## Instanll
 
