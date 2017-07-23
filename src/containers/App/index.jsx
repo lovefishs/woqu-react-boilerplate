@@ -54,10 +54,7 @@ class App extends Component {
     const { locale, messages } = this.state
 
     return (
-      <IntlProvider
-        locale={locale}
-        messages={messages}
-      >
+      <IntlProvider locale={locale} messages={messages}>
         <div>
           <div>
             <select defaultValue={locale} onChange={this.handleLocaleChange}>
@@ -67,6 +64,8 @@ class App extends Component {
           </div>
 
           <HelloMessage text={<FormattedMessage id="intl.china" />} />
+
+          <HelloMessage text={'China'} />
 
           <p>
             <FormattedMessage

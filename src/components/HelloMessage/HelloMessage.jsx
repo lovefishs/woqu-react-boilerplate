@@ -1,12 +1,13 @@
 import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
+import { intlShape } from 'react-intl'
 
 import styles from './style.module.css'
 import cat from './cat.png'
 
 class HelloMessage extends PureComponent {
   static propTypes = {
-    intl: PropTypes.object.isRequired,
+    intl: intlShape.isRequired,
     // text: PropTypes.node.isRequired, // node: numbers, strings, elements or an array or fragment
     text: PropTypes.oneOfType([
       PropTypes.string,
@@ -19,13 +20,9 @@ class HelloMessage extends PureComponent {
 
   render () {
     return (
-      <div>
-        <h1 className={styles.message}>
-          {this.props.intl.formatMessage({ id: 'intl.hello' })}, {this.props.text}!
-        </h1>
-
-        <img src={cat} alt="cat image" />
-      </div>
+      <h1 className={styles.message}>
+        <img src={cat} alt="cat image" /> <span>{this.props.intl.formatMessage({ id: 'intl.hello' })}, {this.props.text}!</span>
+      </h1>
     )
   }
 }
