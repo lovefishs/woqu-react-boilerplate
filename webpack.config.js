@@ -207,9 +207,13 @@ const getConfig = (conf) => {
               loader: 'babel-loader',
               options: {
                 cacheDirectory: true,
+                // In Babel 7, transform-decorators-legacy will be the default plugin in Stage-0.
+                // 升级到 babel 7 使用 stage-0 后清除 babel-plugin-transform-decorators-legacy 插件
+                // v7.0.0-alpha.15 (2017-07-11)
                 presets: [['env', { modules: false }], 'react'],
-                plugins: (function () {
-                  const plugins = ['transform-runtime', 'syntax-dynamic-import', 'transform-class-properties']
+                // presets: ['stage-0', 'react'],
+                plugins: (() => {
+                  const plugins = ['transform-runtime', 'syntax-dynamic-import', 'transform-class-properties', 'transform-decorators-legacy']
 
                   if (conf.env_dev && conf.hmr) {
                     plugins.unshift('react-hot-loader/babel')
@@ -223,7 +227,7 @@ const getConfig = (conf) => {
         },
         {
           test: /^((?!module).)*\.css$/,
-          use: (function () {
+          use: (() => {
             const baseUse = [
               { loader: 'style-loader' },
               { loader: 'css-loader', options: {} },
@@ -256,7 +260,7 @@ const getConfig = (conf) => {
         {
           test: /\.module\.css$/,
           include: sourcePath,
-          use: (function () {
+          use: (() => {
             const baseUse = [
               { loader: 'style-loader' },
               {
@@ -320,7 +324,7 @@ const getConfig = (conf) => {
         },
       ],
     },
-    plugins: (function () {
+    plugins: (() => {
       const commonPlugins = [
         new CopyWebpackPlugin(copyPluginPaths, {
           ignore: [ '.DS_Store', 'Thumbs.db', '.gitkeep' ], // 忽略文件
