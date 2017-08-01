@@ -1,10 +1,5 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
-import {
-  // BrowserRouter as Router,
-  HashRouter as Router,
-  Route,
-} from 'react-router-dom'
 import { AppContainer } from 'react-hot-loader'
 
 import App from 'components/App'
@@ -12,9 +7,7 @@ import App from 'components/App'
 const render = (Component) => {
   ReactDOM.render(
     <AppContainer>
-      <Router>
-        <Route path="/" component={Component} />
-      </Router>
+      <Component />
     </AppContainer>,
     document.getElementById('root')
   )

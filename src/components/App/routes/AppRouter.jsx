@@ -1,32 +1,55 @@
 import React, { Component } from 'react'
-import { Route } from 'react-router-dom'
+import { HashRouter as Router, Route, Switch } from 'react-router-dom'
 
-import LazyComponent, { lazyRender } from 'components/LazyComponent'
+import AsyncLoadModule from 'components/AsyncLoadModule'
+import Home from 'components/Home'
 
 class AppRouter extends Component {
   componentDidMount = () => {
-    // preloads the rest
-    this.loadHome()
+    // const { history, location } = this.props
+    // let nextPath = '/home'
+
+    // if (location.pathname !== nextPath) {
+    //   history.push(nextPath)
+    // }
   }
 
-  loadHome = () => import(/* webpackChunkName: 'route.home' */ 'components/Home')
-  Home = (props) => <LazyComponent {...props} title="Home" load={this.loadHome} lazyRender={lazyRender} />
-
-  loadLogin = () => import(/* webpackChunkName: 'route.login' */ 'components/Login')
-  Login = (props) => <LazyComponent {...props} title="Login" load={this.loadLogin} lazyRender={lazyRender} />
-
-  loadTopics = () => import(/* webpackChunkName: 'route.topics' */ 'components/Topics')
-  Topics = (props) => <LazyComponent {...props} title="Topics" load={this.loadTopics} lazyRender={lazyRender} />
+  WrapHome = (props) => (
+    <Home {...props} title="Home Page" />
+  )
+  WrapNoMatch = (props) => (
+    <AsyncLoadModule moduleId="route.nomatch" load={() => import(/* webpackChunkName: 'route.nomatch' */ 'components/NoMatch')}>
+      {(Comp) => <Comp {...props} title="404 Page" />}
+    </AsyncLoadModule>
+  )
+  WrapLogin = (props) => (
+    <AsyncLoadModule moduleId="route.login" load={() => import(/* webpackChunkName: 'route.login' */ 'components/Login')}>
+      {(Comp) => <Comp {...props} title="Login Page" />}
+    </AsyncLoadModule>
+  )
+  WrapTopics = (props) => (
+    <AsyncLoadModule moduleId="route.topics" load={() => import(/* webpackChunkName: 'route.topics' */ 'components/Topics')}>
+      {(Comp) => <Comp {...props} title="Topics Page" />}
+    </AsyncLoadModule>
+  )
 
   render = () => {
     return (
-      <div>
-        <Route path="/home" component={this.Home} exact strict />
-        <Route path="/login" component={this.Login} exact strict />
-        <Route path="/topics" component={this.Topics} />
-      </div>
+      <Router>
+        <Switch>
+          <Route exact path="/" render={() => (
+            <div>Loading...</div>
+          )} />
+          <Route exact path="/home" component={this.WrapHome} />
+          <Route exact path="/login" component={this.WrapLogin} />
+          <Route path="/topics" component={this.WrapTopics} />
+          <Route component={this.WrapNoMatch} />
+        </Switch>
+      </Router>
     )
   }
 }
+
+//
 
 export default AppRouter

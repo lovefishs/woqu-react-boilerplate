@@ -1,18 +1,27 @@
 import React, { Component } from 'react'
 import { Route } from 'react-router-dom'
 
-import LazyComponent, { lazyRender } from 'components/LazyComponent'
+import AsyncLoadModule from 'components/AsyncLoadModule'
 
 class TopicsRouter extends Component {
-  loadTopic = () => import(/* webpackChunkName: 'route.topics.topic' */ '../components/Topic')
-  Topic = (props) => <LazyComponent {...props} title={`Toppics - ${props.match.params.topicId}`} load={this.loadTopic} lazyRender={lazyRender} />
+  componentDidMount = () => {
+    // preloads the rest
+    // this.loadTopic()
+  }
+
+  loadTopic = () => import(/* webpackChunkName: 'route.topic' */ '../components/Topic')
+  WrapTopic = (props) => (
+    <AsyncLoadModule moduleId="route.topic" load={this.loadTopic}>
+      {(Comp) => <Comp {...props} title={`Topic Page - ${props.match.params.topicId}`} />}
+    </AsyncLoadModule>
+  )
 
   render = () => {
     const { match } = this.props
 
     return (
       <div>
-        <Route path={`${match.url}/:topicId`} component={this.Topic} />
+        <Route path={`${match.url}/:topicId`} component={this.WrapTopic} />
         <Route exact path={match.url} render={() => <h3>Please select a topic.</h3>} />
       </div>
     )
