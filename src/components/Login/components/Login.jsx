@@ -1,6 +1,8 @@
 import React, { Component } from 'react'
 
 import { loading, setPageTitle } from 'decorators'
+import styles from '../styles/login.module.css'
+import cat from '../assets/cat.png'
 
 @loading
 @setPageTitle
@@ -15,7 +17,10 @@ class Login extends Component {
   render = () => {
     return (
       <div>
-        <h2>Login Page</h2>
+        <h2 className={styles.message}>Login Page</h2>
+        <div>
+          <img src={cat} alt="cat image" />
+        </div>
       </div>
     )
   }
