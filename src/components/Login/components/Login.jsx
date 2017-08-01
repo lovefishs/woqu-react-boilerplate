@@ -1,12 +1,15 @@
 import React, { Component } from 'react'
 
-import { compose, loading, setPageTitle } from 'decorators'
+import { loading, setPageTitle } from 'decorators'
 
 @loading
-@setPageTitle('Login Page')
+@setPageTitle
 class Login extends Component {
   componentDidMount = () => {
     console.log('Login component props:', this.props)
+  }
+  componentWillUnmount = () => {
+    console.log('Login componentWillUnmount')
   }
 
   render = () => {

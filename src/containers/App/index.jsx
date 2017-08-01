@@ -38,7 +38,7 @@ class App extends Component {
       })
     } else {
       try {
-        const { default: messages } = await import(/* webpackChunkName: 'i18n.locale.' */ `locales/${locale}`)
+        const { default: messages } = await import(/* webpackChunkName: 'i18n.data.' */ `locales/${locale}`)
 
         this.setState({
           locale,

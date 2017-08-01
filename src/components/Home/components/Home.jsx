@@ -1,12 +1,15 @@
 import React, { Component } from 'react'
 
-import { compose, loading, setPageTitle } from 'decorators'
+import { loading, setPageTitle } from 'decorators'
 
 @loading
-@setPageTitle('Home Page')
+@setPageTitle
 class Home extends Component {
   componentDidMount = () => {
     console.log('Home component props:', this.props)
+  }
+  componentWillUnmount = () => {
+    console.log('Home componentWillUnmount')
   }
 
   render = () => {

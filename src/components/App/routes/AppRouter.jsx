@@ -1,26 +1,30 @@
 import React, { Component } from 'react'
-import {
-  // BrowserRouter as Router,
-  HashRouter as Router,
-  Route,
-} from 'react-router-dom'
+import { Route } from 'react-router-dom'
 
-import LazyRoute, { lazyRender } from 'components/LazyRoute'
-import Home from 'components/Home'
-// import Login from 'components/Login'
-// import Topics from 'components/Topics'
-// <Route path="/topics" component={Topics} />
+import LazyComponent, { lazyRender } from 'components/LazyComponent'
 
 class AppRouter extends Component {
+  componentDidMount = () => {
+    // preloads the rest
+    this.loadHome()
+  }
+
+  loadHome = () => import(/* webpackChunkName: 'route.home' */ 'components/Home')
+  Home = (props) => <LazyComponent {...props} title="Home" load={this.loadHome} lazyRender={lazyRender} />
+
+  loadLogin = () => import(/* webpackChunkName: 'route.login' */ 'components/Login')
+  Login = (props) => <LazyComponent {...props} title="Login" load={this.loadLogin} lazyRender={lazyRender} />
+
+  loadTopics = () => import(/* webpackChunkName: 'route.topics' */ 'components/Topics')
+  Topics = (props) => <LazyComponent {...props} title="Topics" load={this.loadTopics} lazyRender={lazyRender} />
+
   render = () => {
     return (
-      <Router>
-        <div>
-          {/*<Route path="/home" component={Home} />*/}
-          <Route path="/home" render={() => <Home title="Home Page" />} />
-          <Route path="/login" render={() => <LazyRoute title="Login Page" load={() => import(/* webpackChunkName: 'route.' */ 'components/Login')} lazyRender={lazyRender} />} />
-        </div>
-      </Router>
+      <div>
+        <Route path="/home" component={this.Home} exact strict />
+        <Route path="/login" component={this.Login} exact strict />
+        <Route path="/topics" component={this.Topics} />
+      </div>
     )
   }
 }

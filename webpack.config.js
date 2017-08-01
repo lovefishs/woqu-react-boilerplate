@@ -106,8 +106,6 @@ const getEntryAndPlugins = (path, isDEV, isHMR, isMini) => {
         name: CHUNK_COMMON,
         chunks: chunks,
         minChunks: function (module, count) {
-          // console.log(module.context, ' - count: ', count)
-
           return chunks.length === count && module.context && module.context.indexOf('node_modules') === -1
         },
       }),
@@ -213,7 +211,8 @@ const getConfig = (conf) => {
                 presets: [['env', { modules: false }], 'react'],
                 // presets: ['stage-0', 'react'],
                 plugins: (() => {
-                  const plugins = ['transform-runtime', 'syntax-dynamic-import', 'transform-class-properties', 'transform-decorators-legacy']
+                  // 装饰器插件的位置顺序非常重要，see: https://github.com/mobxjs/mobx/issues/105
+                  const plugins = ['transform-decorators-legacy', 'transform-decorators', 'syntax-dynamic-import', 'transform-class-properties', 'transform-runtime']
 
                   if (conf.env_dev && conf.hmr) {
                     plugins.unshift('react-hot-loader/babel')
