@@ -63,3 +63,7 @@ npm run lint-js
 
 * [ ] 单元测试
 * [ ] E2E 测试
+
+## License
+
+MIT
