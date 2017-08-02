@@ -1,7 +1,9 @@
-import { observable, action, computed } from 'mobx'
+import { observable, action, computed, useStrict } from 'mobx'
 import { addLocaleData } from 'react-intl'
 import enLocaleData from 'react-intl/locale-data/en'
 import zhLocaleData from 'react-intl/locale-data/zh'
+
+useStrict(true)
 addLocaleData([...enLocaleData, ...zhLocaleData])
 
 class I18n {
@@ -39,6 +41,19 @@ class I18n {
   }
 
   @action
+  asyncUpdateLocale = (locale, mod) => {
+    this.localeMap[locale] = mod
+
+    localStorage.setItem('locale', locale)
+    this.locale = locale
+
+    if (!(process.env.NODE_ENV === 'development')) {
+      // 生产环境把本地语言对象写入本地存储
+      localStorage.setItem('localeMap', JSON.stringify(this.localeMap))
+    }
+  }
+
+  @action
   updateLocale = (locale) => {
     if (typeof locale !== 'string' || locale === '') {
       return
@@ -53,15 +68,7 @@ class I18n {
         .then(mod => {
           const modReal = mod.default ? mod.default : mod
 
-          this.localeMap[locale] = modReal
-
-          localStorage.setItem('locale', locale)
-          this.locale = locale
-
-          if (!(process.env.NODE_ENV === 'development')) {
-            // 生产环境把本地语言对象写入本地存储
-            localStorage.setItem('localeMap', JSON.stringify(this.localeMap))
-          }
+          this.asyncUpdateLocale(locale, modReal)
         })
         .catch(err => {
           console.error(err)
