@@ -4,26 +4,35 @@ import enLocaleData from 'react-intl/locale-data/en'
 import zhLocaleData from 'react-intl/locale-data/zh'
 addLocaleData([...enLocaleData, ...zhLocaleData])
 
-export const LOCALE_LIST = [
-  { value: 'zh-CN', label: '简体中文' },
-  { value: 'zh-TW', label: '繁体中文' },
-  { value: 'en-US', label: 'English' },
-]
-const LOCALE_DEFAULT = localStorage.getItem('locale') || 'zh-CN'
-const LOCALE_MAP = {}
-
 class I18n {
+  locales = [
+    { value: 'zh-CN', label: '简体中文' },
+    { value: 'zh-TW', label: '繁体中文' },
+    { value: 'en-US', label: 'English' },
+  ]
+  localeDefault = localStorage.getItem('locale') || 'zh-CN'
+  localeMap = ((isDev) => {
+    if (isDev) {
+      return {}
+    }
+
+    const localLocaleMap = localStorage.getItem('localeMap')
+    const localeMap = localLocaleMap === null ? {} : JSON.parse(localLocaleMap)
+
+    return localeMap
+  })(process.env.NODE_ENV === 'development')
+
   @observable
   locale = ''
 
   constructor () {
-    this.updateLocale(LOCALE_DEFAULT)
+    this.updateLocale(this.localeDefault)
   }
 
   @computed
   get messages () {
-    if (LOCALE_MAP[this.locale]) {
-      return LOCALE_MAP[this.locale]
+    if (this.localeMap[this.locale]) {
+      return this.localeMap[this.locale]
     }
 
     return {}
@@ -35,7 +44,7 @@ class I18n {
       return
     }
 
-    if (LOCALE_MAP[locale]) {
+    if (this.localeMap[locale]) {
       localStorage.setItem('locale', locale)
       this.locale = locale
     } else {
@@ -44,10 +53,15 @@ class I18n {
         .then(mod => {
           const modReal = mod.default ? mod.default : mod
 
-          LOCALE_MAP[locale] = modReal
+          this.localeMap[locale] = modReal
 
           localStorage.setItem('locale', locale)
           this.locale = locale
+
+          if (!(process.env.NODE_ENV === 'development')) {
+            // 生产环境把本地语言对象写入本地存储
+            localStorage.setItem('localeMap', JSON.stringify(this.localeMap))
+          }
         })
         .catch(err => {
           console.error(err)
