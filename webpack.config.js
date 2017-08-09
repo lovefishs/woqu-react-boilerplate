@@ -4,6 +4,7 @@ const { resolve } = require('path')
 const webpack = require('webpack')
 const atImport = require('postcss-import')
 const cssnext = require('postcss-cssnext')
+const precss = require('precss')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const ExtractTextPlugin = require('extract-text-webpack-plugin')
 const CleanWebpackPlugin = require('clean-webpack-plugin')
@@ -177,6 +178,7 @@ const getConfig = (conf) => {
       path: [sourcePath, nodeModulesPath],
     }),
     cssnext(),
+    precss(),
   ]
   const entryAndPlugins = getEntryAndPlugins(sourcePath, conf.env_dev, conf.hmr, conf.minimize)
 
