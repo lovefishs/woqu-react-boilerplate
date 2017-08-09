@@ -22,8 +22,9 @@ const CHUNK_VENDOR = 'vendor'
 const CHUNK_COMMON = 'common'
 
 // Create multiple instances
-const extractCSS = new ExtractTextPlugin('styles.[chunkhash].css')
-const extractModuleCSS = new ExtractTextPlugin('styles.module.[chunkhash].css')
+const extractLibCSS = new ExtractTextPlugin('lib.[chunkhash].css')
+const extractStyleCSS = new ExtractTextPlugin('style.[chunkhash].css')
+const extractModuleCSS = new ExtractTextPlugin('module.[chunkhash].css')
 
 /**
  * build entry & plugins
@@ -227,6 +228,35 @@ const getConfig = (conf) => {
           ],
         },
         {
+          // 只适配通过 import 方式导入的外部 css 库(不能适配 css 中的 @import 语法)
+          test: /\.css$/,
+          include: nodeModulesPath,
+          exclude: sourcePath,
+          use: (() => {
+            const baseUse = [
+              { loader: 'style-loader' },
+              { loader: 'css-loader', options: {} },
+            ]
+
+            if (conf.env_dev) {
+              return baseUse
+            } else {
+              baseUse.shift() // remove style-loader
+
+              if (conf.minimize) {
+                Object.assign(baseUse[0].options, { minimize: true })
+              }
+
+              return extractLibCSS.extract({
+                fallback: 'style-loader',
+                use: baseUse,
+              })
+            }
+
+            return []
+          })(),
+        },
+        {
           test: /^((?!module).)*\.css$/,
           use: (() => {
             const baseUse = [
@@ -249,7 +279,7 @@ const getConfig = (conf) => {
                 Object.assign(baseUse[0].options, { minimize: true })
               }
 
-              return extractCSS.extract({
+              return extractStyleCSS.extract({
                 fallback: 'style-loader',
                 use: baseUse,
               })
@@ -343,7 +373,7 @@ const getConfig = (conf) => {
         }))
       }
 
-      return conf.env_dev ? [...commonPlugins, ...entryAndPlugins.plugins] : [...commonPlugins, extractCSS, extractModuleCSS, ...entryAndPlugins.plugins]
+      return conf.env_dev ? [...commonPlugins, ...entryAndPlugins.plugins] : [...commonPlugins, extractLibCSS, extractStyleCSS, extractModuleCSS, ...entryAndPlugins.plugins]
     })(),
     devServer: {
       host: conf.server_dev_host,

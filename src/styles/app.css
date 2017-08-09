@@ -1,28 +1,5 @@
-@import 'normalize.css';
-
-@import './common/var.css';
-
-* {
-  &,
-  &::before,
-  &::after {
-    box-sizing: inherit;
-  }
-}
-
-html {
-  font-size: var(--fontSize);
-  box-sizing: border-box;
-}
-
 html, body {
   height: 100%;
-}
-
-body {
-  color: var(--mainColor);
-  line-height: 1.5;
-  font-size: calc(var(--fontSize) * .875);
 }
 
 @font-face {
