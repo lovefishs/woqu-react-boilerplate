@@ -358,7 +358,7 @@ const getConfig = (conf) => {
       clientLogLevel: 'none',
       stats: 'minimal',
       headers: {},
-      proxy: proxy(conf.server_mock_host, conf.server_mock_port),
+      proxy: proxy(conf.server_prod_host, conf.server_prod_port),
     },
   }
 

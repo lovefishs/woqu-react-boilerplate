@@ -7,8 +7,8 @@ const ENV = NODE_ENV || ENV_DEVELOPMENT
 
 const SERVER_DEV_HOST = '0.0.0.0'
 const SERVER_DEV_PORT = PORT || 3000
-const SERVER_MOCK_HOST = '0.0.0.0'
-const SERVER_MOCK_PORT = SERVER_DEV_PORT + 1
+const SERVER_PROD_HOST = '0.0.0.0'
+const SERVER_PROD_PORT = SERVER_DEV_PORT + 1
 
 const PATH_SERVER = 'server'
 const PATH_SOURCE = 'src'
@@ -26,8 +26,8 @@ const conf = {
   // Server Configuration
   server_dev_host: SERVER_DEV_HOST,
   server_dev_port: SERVER_DEV_PORT,
-  server_mock_host: SERVER_MOCK_HOST,
-  server_mock_port: SERVER_MOCK_PORT,
+  server_prod_host: SERVER_PROD_HOST,
+  server_prod_port: SERVER_PROD_PORT,
 
   // Project Structure
   path_server: PATH_SERVER,
