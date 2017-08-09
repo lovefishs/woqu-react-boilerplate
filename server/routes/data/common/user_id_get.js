@@ -6,7 +6,7 @@ class DataCenter {
   build (id = 0) {
     return Mock.mock({
       data: {
-        id: id,
+        id: parseInt(id, 10),
         name: 'admin',
         group: 'default',
         email: 'mail@woqutech.com',

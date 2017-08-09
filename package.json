@@ -8,6 +8,8 @@
     "build": "NODE_ENV=production MINI=true webpack --hide-modules",
     "build:source": "NODE_ENV=production webpack --hide-modules",
     "lint-js": "q-lint-js src/**/*.js src/**/*.jsx; exit 0",
+    "server:dev": "nodemon ./server/server.js",
+    "server:start": "node ./server/server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -58,6 +60,7 @@
     "koa-router": "7.2.1",
     "koa-static": "4.0.1",
     "mockjs": "1.0.1-beta3",
+    "nodemon": "1.11.0",
     "postcss-cssnext": "3.0.2",
     "postcss-import": "10.0.0",
     "postcss-loader": "2.0.6",
