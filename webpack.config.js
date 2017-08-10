@@ -178,9 +178,9 @@ const getConfig = (conf) => {
     atImport({
       path: [sourcePath, nodeModulesPath],
     }),
-    cssnext(),
     precss(),
-  ]
+    cssnext(),
+  ] // precss in front of cssnext !
   const entryAndPlugins = getEntryAndPlugins(sourcePath, conf.env_dev, conf.hmr, conf.minimize)
 
   const config = {
