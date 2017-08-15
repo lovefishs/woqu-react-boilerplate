@@ -11,6 +11,11 @@ const setPageTitle = (WrappedComponent) => {
         window.document.title = this.props.title
       }
     }
+    componentWillReceiveProps = (nextProps) => {
+      if (this.props.title && nextProps.title && (this.props.title !== nextProps.title)) {
+        window.document.title = nextProps.title
+      }
+    }
 
     render = () => {
       return <WrappedComponent {...this.props} />
