@@ -6,7 +6,7 @@ const loading = (WrappedComponent) => {
   class WrapperComponent extends Component {
     static displayName = `HOC-loading(${getDisplayName(WrappedComponent)})`
 
-    render = () => {
+    render () {
       if (this.props.loading) {
         return <div>Loading...</div>
       }

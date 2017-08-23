@@ -4,7 +4,7 @@ import { Route } from 'react-router-dom'
 import AsyncLoadModule from 'components/AsyncLoadModule'
 
 class TopicsRouter extends Component {
-  componentDidMount = () => {
+  componentDidMount () {
     // preloads the rest
     // this.loadTopic()
   }
@@ -16,7 +16,7 @@ class TopicsRouter extends Component {
     </AsyncLoadModule>
   )
 
-  render = () => {
+  render () {
     const { match } = this.props
 
     return (

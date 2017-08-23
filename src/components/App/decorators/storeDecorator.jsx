@@ -8,7 +8,7 @@ const storeDecorator = (WrappedComponent) => {
   class WrapperComponent extends Component {
     static displayName = `HOC-storeDecorator(${getDisplayName(WrappedComponent)})`
 
-    render = () => {
+    render () {
       return (
         <Provider {...stores}>
           <WrappedComponent {...this.props} />

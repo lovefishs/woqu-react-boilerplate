@@ -6,18 +6,18 @@ const setPageTitle = (WrappedComponent) => {
   class WrapperComponent extends Component {
     static displayName = `HOC-setPageTitle(${getDisplayName(WrappedComponent)})`
 
-    componentDidMount = () => {
+    componentDidMount () {
       if (this.props.title && typeof this.props.title === 'string') {
         window.document.title = this.props.title
       }
     }
-    componentWillReceiveProps = (nextProps) => {
+    componentWillReceiveProps (nextProps) {
       if (this.props.title && nextProps.title && (this.props.title !== nextProps.title)) {
         window.document.title = nextProps.title
       }
     }
 
-    render = () => {
+    render () {
       return <WrappedComponent {...this.props} />
     }
   }

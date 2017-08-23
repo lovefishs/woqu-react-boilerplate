@@ -10,7 +10,7 @@ const i18nDecorator = (WrappedComponent) => {
   class WrapperComponent extends Component {
     static displayName = `HOC-i18nDecorator(${getDisplayName(WrappedComponent)})`
 
-    render = () => {
+    render () {
       const { i18n } = this.props
 
       if (i18n.locale === '') {

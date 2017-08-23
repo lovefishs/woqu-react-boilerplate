@@ -14,10 +14,10 @@ class Home extends Component {
   }
   static defaultProps = {}
 
-  componentDidMount = () => {
+  componentDidMount () {
     console.log('Home component props:', this.props)
   }
-  componentWillUnmount = () => {
+  componentWillUnmount () {
     console.log('Home componentWillUnmount')
   }
 
@@ -25,7 +25,7 @@ class Home extends Component {
     this.props.i18n.updateLocale(e.currentTarget.value)
   }
 
-  render = () => {
+  render () {
     const { i18n, intl } = this.props
 
     return (

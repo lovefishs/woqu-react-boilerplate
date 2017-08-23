@@ -9,7 +9,7 @@ import AppRouter from '../routes/AppRouter'
 class App extends Component {
   // componentDidMount = () => {}
 
-  render = () => {
+  render () {
     return <AppRouter {...this.props} />
   }
 }

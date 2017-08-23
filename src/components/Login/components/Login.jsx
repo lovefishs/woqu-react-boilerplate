@@ -7,14 +7,14 @@ import cat from '../assets/cat.png'
 @loading
 @setPageTitle
 class Login extends Component {
-  componentDidMount = () => {
+  componentDidMount () {
     console.log('Login component props:', this.props)
   }
-  componentWillUnmount = () => {
+  componentWillUnmount () {
     console.log('Login componentWillUnmount')
   }
 
-  render = () => {
+  render () {
     return (
       <div>
         <h2 className={styles.message}>Login Page</h2>

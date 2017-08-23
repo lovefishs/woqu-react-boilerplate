@@ -33,7 +33,7 @@ class AppRouter extends Component {
     </AsyncLoadModule>
   )
 
-  render = () => {
+  render () {
     return (
       <Router>
         <Switch>

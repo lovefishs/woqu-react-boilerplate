@@ -7,14 +7,14 @@ import TopicsRouter from '../routes/TopicsRouter'
 @loading
 @setPageTitle
 class Topics extends Component {
-  componentDidMount = () => {
+  componentDidMount () {
     console.log('Topics component props:', this.props)
   }
-  componentWillUnmount = () => {
+  componentWillUnmount () {
     console.log('Topics componentWillUnmount')
   }
 
-  render = () => {
+  render () {
     const { match } = this.props
 
     return (

@@ -4,7 +4,7 @@ import { setPageTitle } from 'decorators'
 
 @setPageTitle
 class NoMatch extends PureComponent {
-  render = () => {
+  render () {
     const { location } = this.props
 
     return (

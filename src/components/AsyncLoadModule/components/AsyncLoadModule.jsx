@@ -13,10 +13,10 @@ class AsyncLoadModule extends Component {
     mod: null,
   }
 
-  componentWillMount = () => {
+  componentWillMount () {
     this.load(this.props)
   }
-  componentWillReceiveProps = (nextProps) => {
+  componentWillReceiveProps (nextProps) {
     if (nextProps.moduleId !== this.props.moduleId) {
       if (this._reactInternalInstance && AsyncLoadModule.cached[nextProps.moduleId]) {
         this.setState({
@@ -51,7 +51,7 @@ class AsyncLoadModule extends Component {
     }
   }
 
-  render = () => {
+  render () {
     return this.state.mod ? this.props.children(this.state.mod) : null
   }
 }
