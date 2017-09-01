@@ -7,7 +7,7 @@ module.exports = (router, app) => {
 
 
   // get user information
-  router.get('/user/:id(\\d+)', async (ctx, next) => {
+  router.get('/user/:id(\\d+)', async (ctx) => {
     // const query = ctx.query
     const params = ctx.params
     // const data = ctx.request.body

@@ -37,11 +37,11 @@ class AppRouter extends Component {
     return (
       <Router>
         <Switch>
-          <Route exact path="/" render={() => (
+          <Route exact={true} path="/" render={() => (
             <div>Loading...</div>
           )} />
-          <Route exact path="/home" component={this.WrapHome} />
-          <Route exact path="/login" component={this.WrapLogin} />
+          <Route path="/home" component={this.WrapHome} />
+          <Route path="/login" component={this.WrapLogin} />
           <Route path="/topics" component={this.WrapTopics} />
           <Route component={this.WrapNoMatch} />
         </Switch>

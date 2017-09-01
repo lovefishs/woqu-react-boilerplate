@@ -1,7 +1,7 @@
 const Mock = require('mockjs')
 
 class DataCenter {
-  constructor () {}
+  // constructor () {}
 
   build (id = 0) {
     return Mock.mock({

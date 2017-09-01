@@ -8,7 +8,7 @@ const precss = require('precss')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const ExtractTextPlugin = require('extract-text-webpack-plugin')
 const CleanWebpackPlugin = require('clean-webpack-plugin')
-const CopyWebpackPlugin  = require('copy-webpack-plugin')
+const CopyWebpackPlugin = require('copy-webpack-plugin')
 const CompressionPlugin = require('compression-webpack-plugin')
 
 const { HotModuleReplacementPlugin, DefinePlugin, NamedModulesPlugin, HashedModuleIdsPlugin } = webpack
@@ -152,13 +152,13 @@ const getEntryAndPlugins = (path, isDEV, isHMR, isMini) => {
       result.plugins.push(new HashedModuleIdsPlugin())
 
       // 启用 gzip 压缩(需要服务端配合配置): https://doc.webpack-china.org/plugins/compression-webpack-plugin/
-      new CompressionPlugin({
+      result.plugins.push(new CompressionPlugin({
         asset: '[path].gz[query]',
         algorithm: 'gzip',
         test: /\.(js|css|html)$/,
         threshold: 10 * 1024,
         minRatio: 0.8,
-      })
+      }))
     }
   }
 
@@ -252,8 +252,6 @@ const getConfig = (conf) => {
                 use: baseUse,
               })
             }
-
-            return []
           })(),
         },
         {
@@ -284,8 +282,6 @@ const getConfig = (conf) => {
                 use: baseUse,
               })
             }
-
-            return []
           })(),
         },
         {
@@ -325,8 +321,6 @@ const getConfig = (conf) => {
                 use: baseUse,
               })
             }
-
-            return []
           })(),
         },
         {

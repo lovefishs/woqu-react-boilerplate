@@ -6,7 +6,6 @@ const bodyParser = require('koa-bodyparser')
 const qs = require('koa-qs')
 
 // conf
-const pkg  = require('../package.json')
 const conf = require('../conf')
 const staticPath = resolve(__dirname, '../', (conf.env_dev ? conf.path_dev : conf.path_dist))
 
@@ -23,11 +22,11 @@ app.use(serverStatic(staticPath, {
 // logger
 if (conf.env_dev) {
   app.use(async (ctx, next) => {
-    const start = new Date
+    const start = new Date()
 
     await next()
 
-    const ms = new Date - start
+    const ms = new Date() - start
     ctx.set('X-Response-Time', `${ms}ms`)
     console.log(`${ctx.method} ${ctx.status} ${ctx.url} - ${ms}ms`)
   })
@@ -42,7 +41,7 @@ require('./routes/commonRouter')(new Router({
 app.use(async (ctx, next) => {
   await next()
 
-  if (404 !== ctx.status) {
+  if (ctx.status !== 404) {
     return
   }
 
@@ -62,7 +61,7 @@ app.use(async (ctx, next) => {
 })
 
 // server start
-app.listen(conf.server_prod_port, conf.server_prod_host, (err, ctx) => {
+app.listen(conf.server_prod_port, conf.server_prod_host, (err) => {
   if (err) {
     return console.error(err)
   }

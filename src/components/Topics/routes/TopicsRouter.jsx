@@ -22,7 +22,7 @@ class TopicsRouter extends Component {
     return (
       <div>
         <Route path={`${match.url}/:topicId`} component={this.WrapTopic} />
-        <Route exact path={match.url} render={() => <h3>Please select a topic.</h3>} />
+        <Route exact={true} path={match.url} render={() => <h3>Please select a topic.</h3>} />
       </div>
     )
   }
