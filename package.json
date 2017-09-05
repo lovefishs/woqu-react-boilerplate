@@ -8,6 +8,7 @@
     "build": "NODE_ENV=production MINI=true webpack --hide-modules",
     "build:source": "NODE_ENV=production webpack --hide-modules",
     "lint-js": "q-lint-js --verbose; exit 0",
+    "precommit": "lint-staged",
     "server:dev": "nodemon ./server/server.js",
     "server:start": "node ./server/server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -38,6 +39,11 @@
       "src/assets/"
     ]
   },
+  "lint-staged": {
+    "*.{js,jsx}": [
+      "q-lint-js --verbose"
+    ]
+  },
   "engines": {
     "node": ">= 8.0.0",
     "npm": ">= 5.0.0"
@@ -63,11 +69,13 @@
     "extract-text-webpack-plugin": "3.0.0",
     "file-loader": "0.11.2",
     "html-webpack-plugin": "2.30.1",
+    "husky": "0.14.3",
     "koa": "2.3.0",
     "koa-bodyparser": "4.2.0",
     "koa-qs": "2.0.0",
     "koa-router": "7.2.1",
     "koa-static": "4.0.1",
+    "lint-staged": "4.1.0",
     "mockjs": "1.0.1-beta3",
     "nodemon": "1.12.0",
     "postcss-cssnext": "3.0.2",
