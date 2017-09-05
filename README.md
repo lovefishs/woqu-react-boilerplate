@@ -24,6 +24,7 @@ WoQu's React App Boilerplate
 * 基于 [react-router(v4+)](https://reacttraining.com/react-router/web/guides/philosophy) 管理页面路由
 * 基于 [Webpack Code Splitting](https://webpack.js.org/guides/code-splitting/) 实现模块异步加载
 * 使用 [Mobx](https://github.com/mobxjs/mobx) 实现应用状态管理
+* 使用 [husky](https://github.com/typicode/husky) 与 [lint-staged](https://github.com/okonet/lint-staged) 实现 git commit hook
 
 ## Instanll
 
