@@ -22,7 +22,7 @@ const CHUNK_VENDOR = 'vendor'
 const CHUNK_COMMON = 'common'
 
 // Create multiple instances
-const extractLibCSS = new ExtractTextPlugin('lib.[chunkhash].css')
+const extractVendorCSS = new ExtractTextPlugin('vendor.[chunkhash].css')
 const extractStyleCSS = new ExtractTextPlugin('style.[chunkhash].css')
 const extractModuleCSS = new ExtractTextPlugin('module.[chunkhash].css')
 
@@ -247,7 +247,7 @@ const getConfig = (conf) => {
                 Object.assign(baseUse[0].options, { minimize: true })
               }
 
-              return extractLibCSS.extract({
+              return extractVendorCSS.extract({
                 fallback: 'style-loader',
                 use: baseUse,
               })
@@ -367,7 +367,7 @@ const getConfig = (conf) => {
         }))
       }
 
-      return conf.env_dev ? [...commonPlugins, ...entryAndPlugins.plugins] : [...commonPlugins, extractLibCSS, extractStyleCSS, extractModuleCSS, ...entryAndPlugins.plugins]
+      return conf.env_dev ? [...commonPlugins, ...entryAndPlugins.plugins] : [...commonPlugins, extractVendorCSS, extractStyleCSS, extractModuleCSS, ...entryAndPlugins.plugins]
     })(),
     devServer: {
       host: conf.server_dev_host,

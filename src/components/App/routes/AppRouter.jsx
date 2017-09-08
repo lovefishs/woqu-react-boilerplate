@@ -5,7 +5,7 @@ import AsyncLoadModule from 'components/AsyncLoadModule'
 import Home from 'components/Home'
 
 class AppRouter extends Component {
-  componentDidMount = () => {
+  componentDidMount () {
     // const { history, location } = this.props
     // let nextPath = '/home'
 
