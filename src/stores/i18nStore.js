@@ -3,7 +3,9 @@ import { addLocaleData } from 'react-intl'
 import enLocaleData from 'react-intl/locale-data/en'
 import zhLocaleData from 'react-intl/locale-data/zh'
 
-useStrict(true)
+if (!__HMR__) {
+  useStrict(true)
+}
 addLocaleData([...enLocaleData, ...zhLocaleData])
 
 class I18n {
