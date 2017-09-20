@@ -207,6 +207,8 @@ const getConfig = (conf) => {
             {
               loader: 'babel-loader',
               options: {
+                // 完整配置: https://babeljs.io/docs/usage/api/#options
+                babelrc: false, // 指定不使用 .babelrc 文件配置(在存在 .babelrc 文件的情况下，会造成冲突)
                 cacheDirectory: true,
                 // In Babel 7, transform-decorators-legacy will be the default plugin in Stage-0.
                 // 升级到 babel 7 使用 stage-0 后清除 babel-plugin-transform-decorators-legacy 插件
@@ -215,7 +217,8 @@ const getConfig = (conf) => {
                 // presets: ['stage-0', 'react'],
                 plugins: (() => {
                   // 装饰器插件的位置顺序非常重要，see: https://github.com/mobxjs/mobx/issues/105
-                  const plugins = ['transform-decorators-legacy', 'transform-decorators', 'syntax-dynamic-import', 'transform-class-properties', 'transform-runtime']
+                  // const plugins = ['transform-decorators-legacy', 'transform-decorators', 'syntax-dynamic-import', 'transform-class-properties', 'transform-runtime']
+                  const plugins = ['transform-decorators-legacy', 'transform-decorators', 'transform-runtime', 'syntax-dynamic-import', 'transform-class-properties']
 
                   if (conf.env_dev && conf.hmr) {
                     plugins.unshift('react-hot-loader/babel')
@@ -379,7 +382,7 @@ const getConfig = (conf) => {
       compress: true,
       noInfo: false,
       overlay: true,
-      clientLogLevel: 'none',
+      clientLogLevel: 'none', // info, none, error, warning
       stats: 'minimal',
       headers: {},
       proxy: proxy(conf.server_prod_host, conf.server_prod_port),
