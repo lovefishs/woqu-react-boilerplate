@@ -28,7 +28,7 @@ class Topics extends Component {
             <Link to={`${match.url}/components`}>Components</Link>
           </li>
           <li>
-            <Link to={`${match.url}/props-v-state`}>Props v. State</Link>
+            <Link to={`${match.url}/props-v-state`}>Props v. State xxx</Link>
           </li>
         </ul>
 

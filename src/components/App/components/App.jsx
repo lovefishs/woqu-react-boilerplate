@@ -7,8 +7,6 @@ import AppRouter from '../routes/AppRouter'
 @storeDecorator
 @i18nDecorator
 class App extends Component {
-  // componentDidMount = () => {}
-
   render () {
     return <AppRouter {...this.props} />
   }
