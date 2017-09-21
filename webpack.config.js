@@ -218,7 +218,7 @@ const getConfig = (conf) => {
                 plugins: (() => {
                   // 装饰器插件的位置顺序非常重要，see: https://github.com/mobxjs/mobx/issues/105
                   // const plugins = ['transform-decorators-legacy', 'transform-decorators', 'syntax-dynamic-import', 'transform-class-properties', 'transform-runtime']
-                  const plugins = ['transform-decorators-legacy', 'transform-decorators', 'transform-runtime', 'syntax-dynamic-import', 'transform-class-properties']
+                  const plugins = ['transform-decorators-legacy', 'transform-decorators', 'syntax-dynamic-import', 'transform-class-properties', 'transform-object-rest-spread', 'transform-runtime']
 
                   if (conf.env_dev && conf.hmr) {
                     plugins.unshift('react-hot-loader/babel')
